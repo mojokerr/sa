@@ -126,10 +126,12 @@ export async function POST(request: NextRequest) {
         data: {
           userId: session.user.id,
           groupLink,
+          targetGroupLink,
           targetCount,
           notes,
           priority,
           price: orderPrice,
+          transferType: 'MEMBER_TRANSFER',
           estimatedCompletion: estimateCompletionTime(targetCount, priority),
         },
         include: {
