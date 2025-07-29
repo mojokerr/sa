@@ -139,9 +139,19 @@ export function OrderForm({ onClose, onSuccess, userCredits }: OrderFormProps) {
 
   const onSubmit = async () => {
     const data = watchedValues;
-    
+
     if (!validateTelegramLink(data.groupLink)) {
-      toast.error('Please enter a valid Telegram group link');
+      toast.error('Please enter a valid source Telegram group link');
+      return;
+    }
+
+    if (!validateTelegramLink(data.targetGroupLink)) {
+      toast.error('Please enter a valid target Telegram group link');
+      return;
+    }
+
+    if (data.groupLink === data.targetGroupLink) {
+      toast.error('Source and target groups must be different');
       return;
     }
 
