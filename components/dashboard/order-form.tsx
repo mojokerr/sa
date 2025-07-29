@@ -94,11 +94,14 @@ export function OrderForm({ onClose, onSuccess, userCredits }: OrderFormProps) {
   const handleNextStep = () => {
     if (currentStep === 'details') {
       // Validate form before proceeding
-      const isValid = watchedValues.groupLink && 
-                     watchedValues.targetCount && 
-                     watchedValues.targetCount >= 10 && 
+      const isValid = watchedValues.groupLink &&
+                     watchedValues.targetGroupLink &&
+                     watchedValues.targetCount &&
+                     watchedValues.targetCount >= 10 &&
                      watchedValues.targetCount <= 100000 &&
-                     validateTelegramLink(watchedValues.groupLink);
+                     validateTelegramLink(watchedValues.groupLink) &&
+                     validateTelegramLink(watchedValues.targetGroupLink) &&
+                     watchedValues.groupLink !== watchedValues.targetGroupLink;
       
       if (!isValid) {
         toast.error('Please fill all required fields correctly');
@@ -139,9 +142,19 @@ export function OrderForm({ onClose, onSuccess, userCredits }: OrderFormProps) {
 
   const onSubmit = async () => {
     const data = watchedValues;
-    
+
     if (!validateTelegramLink(data.groupLink)) {
-      toast.error('Please enter a valid Telegram group link');
+      toast.error('Please enter a valid source Telegram group link');
+      return;
+    }
+
+    if (!validateTelegramLink(data.targetGroupLink)) {
+      toast.error('Please enter a valid target Telegram group link');
+      return;
+    }
+
+    if (data.groupLink === data.targetGroupLink) {
+      toast.error('Source and target groups must be different');
       return;
     }
 
@@ -263,34 +276,51 @@ export function OrderForm({ onClose, onSuccess, userCredits }: OrderFormProps) {
           <div className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="groupLink">{t('form.source.label')} *</Label>
+              <Label htmlFor="groupLink">رابط المجموعة المصدر (Source Group) *</Label>
               <Input
                 id="groupLink"
                 type="url"
-                placeholder="https://t.me/groupname"
+                placeholder="https://t.me/sourcegroup"
                 {...register('groupLink')}
                 className="h-12"
               />
               {errors.groupLink && (
                 <p className="text-sm text-red-500">{errors.groupLink.message}</p>
               )}
+              <p className="text-xs text-slate-500">المجموعة التي سيتم نقل الأعضاء منها</p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="targetCount">{t('form.members.label')} *</Label>
+              <Label htmlFor="targetGroupLink">رابط المجموعة المستهدفة (Target Group) *</Label>
               <Input
-                id="targetCount"
-                type="number"
-                placeholder="1000"
-                min="10"
-                max="100000"
-                {...register('targetCount', { valueAsNumber: true })}
+                id="targetGroupLink"
+                type="url"
+                placeholder="https://t.me/targetgroup"
+                {...register('targetGroupLink')}
                 className="h-12"
               />
-              {errors.targetCount && (
-                <p className="text-sm text-red-500">{errors.targetCount.message}</p>
+              {errors.targetGroupLink && (
+                <p className="text-sm text-red-500">{errors.targetGroupLink.message}</p>
               )}
+              <p className="text-xs text-slate-500">المجموعة التي سيتم نقل الأعضاء إليها</p>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="targetCount">{t('form.members.label')} *</Label>
+            <Input
+              id="targetCount"
+              type="number"
+              placeholder="1000"
+              min="10"
+              max="100000"
+              {...register('targetCount', { valueAsNumber: true })}
+              className="h-12"
+            />
+            {errors.targetCount && (
+              <p className="text-sm text-red-500">{errors.targetCount.message}</p>
+            )}
+            <p className="text-xs text-slate-500">عدد الأعضاء المراد نقلهم (من 10 إلى 100,000 عضو)</p>
           </div>
 
           <div className="space-y-2">
@@ -389,61 +419,59 @@ export function OrderForm({ onClose, onSuccess, userCredits }: OrderFormProps) {
         )}
 
         {/* Price Estimation (shown on details step) */}
-        {currentStep === 'details' && (
-          {estimatedPrice > 0 && (
-            <Card className="bg-gradient-to-r from-cyan-50 to-purple-50 dark:from-cyan-900/20 dark:to-purple-900/20 border-cyan-200 dark:border-cyan-800">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Calculator className="h-5 w-5 text-cyan-600" />
-                    <span className="font-medium text-slate-900 dark:text-white">
-                      Estimated Cost
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-cyan-600">
-                      {estimatedCredits.toLocaleString()} Credits
-                    </p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">
-                      ${estimatedPrice.toFixed(2)} USD
-                    </p>
+        {currentStep === 'details' && estimatedPrice > 0 && (
+          <Card className="bg-gradient-to-r from-cyan-50 to-purple-50 dark:from-cyan-900/20 dark:to-purple-900/20 border-cyan-200 dark:border-cyan-800">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Calculator className="h-5 w-5 text-cyan-600" />
+                  <span className="font-medium text-slate-900 dark:text-white">
+                    Estimated Cost
+                  </span>
+                </div>
+                <div className="text-right">
+                  <p className="text-lg font-bold text-cyan-600">
+                    {estimatedCredits.toLocaleString()} Credits
+                  </p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    ${estimatedPrice.toFixed(2)} USD
+                  </p>
+                </div>
+              </div>
+              {estimatedCredits > userCredits && (
+                <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+                  <p className="text-sm text-red-600 dark:text-red-400">
+                    ⚠️ Insufficient credits. You need {(estimatedCredits - userCredits).toLocaleString()} more credits.
+                  </p>
+                </div>
+              )}
+
+              {/* Payment Option Toggle */}
+              {estimatedCredits <= userCredits && (
+                <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-blue-700 dark:text-blue-300">
+                        You have enough credits for this order
+                      </p>
+                      <p className="text-xs text-blue-600 dark:text-blue-400">
+                        You can pay with credits or choose another payment method
+                      </p>
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setUseCredits(!useCredits)}
+                      className="text-blue-600 border-blue-300 hover:bg-blue-100"
+                    >
+                      {useCredits ? 'Pay with Money' : 'Use Credits'}
+                    </Button>
                   </div>
                 </div>
-                {estimatedCredits > userCredits && (
-                  <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-                    <p className="text-sm text-red-600 dark:text-red-400">
-                      ⚠️ Insufficient credits. You need {(estimatedCredits - userCredits).toLocaleString()} more credits.
-                    </p>
-                  </div>
-                )}
-                
-                {/* Payment Option Toggle */}
-                {estimatedCredits <= userCredits && (
-                  <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className="text-sm font-medium text-blue-700 dark:text-blue-300">
-                          You have enough credits for this order
-                        </p>
-                        <p className="text-xs text-blue-600 dark:text-blue-400">
-                          You can pay with credits or choose another payment method
-                        </p>
-                      </div>
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setUseCredits(!useCredits)}
-                        className="text-blue-600 border-blue-300 hover:bg-blue-100"
-                      >
-                        {useCredits ? 'Pay with Money' : 'Use Credits'}
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
+              )}
+            </CardContent>
+          </Card>
         )}
 
         {/* Navigation Buttons */}

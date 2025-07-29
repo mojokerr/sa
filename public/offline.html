@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>غير متصل - BoostGram AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            direction: rtl;
+        }
+        
+        .container {
+            max-width: 500px;
+            padding: 2rem;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .offline-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            opacity: 0.7;
+        }
+        
+        .retry-btn {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+        }
+        
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(6, 182, 212, 0.4);
+        }
+        
+        .features {
+            margin-top: 3rem;
+            text-align: right;
+        }
+        
+        .feature {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 1rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-icon {
+            width: 24px;
+            height: 24px;
+            margin-left: 1rem;
+            opacity: 0.8;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo pulse">BG</div>
+        
+        <svg class="offline-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z" fill="currentColor" opacity="0.7"/>
+        </svg>
+        
+        <h1>غير متصل بالإنترنت</h1>
+        <p>يبدو أنك غير متصل بالإنترنت حالياً. تحقق من اتصالك وحاول مرة أخرى.</p>
+        
+        <button class="retry-btn" onclick="window.location.reload()">
+            إعادة المحاولة
+        </button>
+        
+        <div class="features">
+            <div class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                <span>بعض المحتوى متاح بدون اتصال</span>
+            </div>
+            
+            <div class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/>
+                </svg>
+                <span>سيتم حفظ التغييرات عند الاتصال</span>
+            </div>
+            
+            <div class="feature">
+                <svg class="feature-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                <span>الإعدادات محفوظة محلياً</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Check for network connectivity
+        function checkConnection() {
+            if (navigator.onLine) {
+                window.location.reload();
+            }
+        }
+        
+        // Listen for network changes
+        window.addEventListener('online', checkConnection);
+        
+        // Auto-retry every 10 seconds
+        setInterval(checkConnection, 10000);
+        
+        // Service Worker registration check
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.ready.then(() => {
+                console.log('Service Worker is ready');
+            });
+        }
+    </script>
+</body>
+</html>

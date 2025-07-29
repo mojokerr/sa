@@ -19,9 +19,14 @@ export const signInSchema = z.object({
 // Order validations
 export const createOrderSchema = z.object({
   groupLink: z.string()
-    .url('Invalid group link')
+    .url('Invalid source group link')
     .refine((url) => url.includes('t.me/') || url.includes('telegram.me/'), {
-      message: 'Must be a valid Telegram group link',
+      message: 'Must be a valid Telegram source group link',
+    }),
+  targetGroupLink: z.string()
+    .url('Invalid target group link')
+    .refine((url) => url.includes('t.me/') || url.includes('telegram.me/'), {
+      message: 'Must be a valid Telegram target group link',
     }),
   targetCount: z.number()
     .min(10, 'Minimum 10 members required')
@@ -30,6 +35,9 @@ export const createOrderSchema = z.object({
   priority: z.enum(['LOW', 'NORMAL', 'HIGH', 'URGENT']).default('NORMAL'),
   paymentMethod: z.string().optional(),
   paymentProofUrl: z.string().optional(),
+}).refine((data) => data.groupLink !== data.targetGroupLink, {
+  message: 'Source and target groups must be different',
+  path: ['targetGroupLink'],
 });
 
 export const updateOrderSchema = z.object({

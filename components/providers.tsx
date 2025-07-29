@@ -3,6 +3,7 @@
 import { ThemeProvider } from 'next-themes';
 import { SessionProvider } from 'next-auth/react';
 import { LanguageProvider } from '@/contexts/language-context';
+import { PWAInstaller } from '@/components/pwa-installer';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       >
         <LanguageProvider>
           {children}
+          <PWAInstaller />
         </LanguageProvider>
       </ThemeProvider>
     </SessionProvider>
