@@ -16,6 +16,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       >
         <LanguageProvider>
           {children}
+          <PWAInstaller />
         </LanguageProvider>
       </ThemeProvider>
     </SessionProvider>
