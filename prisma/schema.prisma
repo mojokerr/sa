@@ -78,7 +78,8 @@ model VerificationToken {
 model Order {
   id          String      @id @default(cuid())
   userId      String
-  groupLink   String
+  groupLink   String      // Source group link
+  targetGroupLink String  // Target group link
   targetCount Int
   currentCount Int        @default(0)
   status      OrderStatus @default(PENDING)
@@ -95,15 +96,20 @@ model Order {
   paymentMethod String?
   paymentProofUrl String?
   refundId    String?
+  transferType String     @default("MEMBER_TRANSFER") // MEMBER_TRANSFER, BULK_INVITE, etc.
+  sourceGroupInfo Json?   // Store source group metadata
+  targetGroupInfo Json?   // Store target group metadata
+  transferErrors Json?    // Store transfer errors and failed members
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   progress OrderProgress[]
-  
+
   @@index([userId])
   @@index([status])
   @@index([createdAt])
+  @@index([transferType])
 }
 
 model OrderProgress {
