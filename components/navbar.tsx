@@ -62,10 +62,10 @@ export function Navbar() {
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-10 h-10 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">BG</span>
+                <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <span className="text-white font-bold text-xl">BG</span>
                 </div>
-                <span className="font-bold text-xl bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="font-bold text-2xl bg-gradient-to-r from-cyan-600 to-purple-600 bg-clip-text text-transparent">
                   BoostGram AI
                 </span>
               </Link>
@@ -74,7 +74,7 @@ export function Navbar() {
             <div className="hidden md:flex items-center space-x-8">
               <Link 
                 href="/" 
-                className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors font-medium"
               >
                 {t('nav.home')}
               </Link>
@@ -82,14 +82,14 @@ export function Navbar() {
                 <>
                   <Link 
                     href="/dashboard" 
-                    className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                    className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors font-medium"
                   >
                     {t('nav.dashboard')}
                   </Link>
                   {(session.user.role === 'ADMIN' || session.user.role === 'SUPER_ADMIN') && (
                     <Link 
                       href="/admin" 
-                      className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors"
+                      className="text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors font-medium"
                     >
                       {t('nav.admin')}
                     </Link>
@@ -102,7 +102,7 @@ export function Navbar() {
               {/* Language Selector */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
+                  <Button variant="ghost" size="icon" className="hover:bg-slate-100 dark:hover:bg-slate-800">
                     <Globe className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -120,6 +120,7 @@ export function Navbar() {
               <Button
                 variant="ghost"
                 size="icon"
+                className="hover:bg-slate-100 dark:hover:bg-slate-800"
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
               >
                 <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
@@ -132,7 +133,7 @@ export function Navbar() {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="relative"
+                    className="relative hover:bg-slate-100 dark:hover:bg-slate-800"
                     onClick={() => setShowNotifications(true)}
                   >
                     <Bell className="h-4 w-4" />
@@ -149,7 +150,7 @@ export function Navbar() {
                   {/* User Menu */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon">
+                      <Button variant="ghost" size="icon" className="hover:bg-slate-100 dark:hover:bg-slate-800">
                         <User className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -200,10 +201,10 @@ export function Navbar() {
               ) : (
                 <div className="flex items-center space-x-2">
                   <Link href="/auth/signin">
-                    <Button variant="ghost">Sign In</Button>
+                    <Button variant="ghost" className="hover:bg-slate-100 dark:hover:bg-slate-800">Sign In</Button>
                   </Link>
                   <Link href="/auth/signup">
-                    <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700">
+                    <Button className="bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-300">
                       Sign Up
                     </Button>
                   </Link>

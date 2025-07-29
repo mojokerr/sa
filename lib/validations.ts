@@ -28,6 +28,8 @@ export const createOrderSchema = z.object({
     .max(100000, 'Maximum 100,000 members allowed'),
   notes: z.string().max(500, 'Notes must be less than 500 characters').optional(),
   priority: z.enum(['LOW', 'NORMAL', 'HIGH', 'URGENT']).default('NORMAL'),
+  paymentMethod: z.string().optional(),
+  paymentProofUrl: z.string().optional(),
 });
 
 export const updateOrderSchema = z.object({
