@@ -263,34 +263,51 @@ export function OrderForm({ onClose, onSuccess, userCredits }: OrderFormProps) {
           <div className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="groupLink">{t('form.source.label')} *</Label>
+              <Label htmlFor="groupLink">رابط المجموعة المصدر (Source Group) *</Label>
               <Input
                 id="groupLink"
                 type="url"
-                placeholder="https://t.me/groupname"
+                placeholder="https://t.me/sourcegroup"
                 {...register('groupLink')}
                 className="h-12"
               />
               {errors.groupLink && (
                 <p className="text-sm text-red-500">{errors.groupLink.message}</p>
               )}
+              <p className="text-xs text-slate-500">المجموعة التي سيتم نقل الأعضاء منها</p>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="targetCount">{t('form.members.label')} *</Label>
+              <Label htmlFor="targetGroupLink">رابط المجموعة المستهدفة (Target Group) *</Label>
               <Input
-                id="targetCount"
-                type="number"
-                placeholder="1000"
-                min="10"
-                max="100000"
-                {...register('targetCount', { valueAsNumber: true })}
+                id="targetGroupLink"
+                type="url"
+                placeholder="https://t.me/targetgroup"
+                {...register('targetGroupLink')}
                 className="h-12"
               />
-              {errors.targetCount && (
-                <p className="text-sm text-red-500">{errors.targetCount.message}</p>
+              {errors.targetGroupLink && (
+                <p className="text-sm text-red-500">{errors.targetGroupLink.message}</p>
               )}
+              <p className="text-xs text-slate-500">المجموعة التي سيتم نقل الأعضاء إليها</p>
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="targetCount">{t('form.members.label')} *</Label>
+            <Input
+              id="targetCount"
+              type="number"
+              placeholder="1000"
+              min="10"
+              max="100000"
+              {...register('targetCount', { valueAsNumber: true })}
+              className="h-12"
+            />
+            {errors.targetCount && (
+              <p className="text-sm text-red-500">{errors.targetCount.message}</p>
+            )}
+            <p className="text-xs text-slate-500">عدد الأعضاء المراد نقلهم (من 10 إلى 100,000 عضو)</p>
           </div>
 
           <div className="space-y-2">
