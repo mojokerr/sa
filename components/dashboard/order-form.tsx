@@ -94,11 +94,14 @@ export function OrderForm({ onClose, onSuccess, userCredits }: OrderFormProps) {
   const handleNextStep = () => {
     if (currentStep === 'details') {
       // Validate form before proceeding
-      const isValid = watchedValues.groupLink && 
-                     watchedValues.targetCount && 
-                     watchedValues.targetCount >= 10 && 
+      const isValid = watchedValues.groupLink &&
+                     watchedValues.targetGroupLink &&
+                     watchedValues.targetCount &&
+                     watchedValues.targetCount >= 10 &&
                      watchedValues.targetCount <= 100000 &&
-                     validateTelegramLink(watchedValues.groupLink);
+                     validateTelegramLink(watchedValues.groupLink) &&
+                     validateTelegramLink(watchedValues.targetGroupLink) &&
+                     watchedValues.groupLink !== watchedValues.targetGroupLink;
       
       if (!isValid) {
         toast.error('Please fill all required fields correctly');
