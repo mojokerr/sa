@@ -91,7 +91,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { groupLink, targetCount, notes, priority } = createOrderSchema.parse(body);
+    const { groupLink, targetGroupLink, targetCount, notes, priority } = createOrderSchema.parse(body);
 
     // Check user credits
     const user = await prisma.user.findUnique({
