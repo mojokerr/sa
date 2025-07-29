@@ -1,6 +1,3 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
-import { Order } from './order.entity';
-
 export enum PaymentMethodType {
   VODAFONE_CASH = 'vodafone_cash',
   USDT_TRC20 = 'usdt_trc20',
@@ -8,33 +5,41 @@ export enum PaymentMethodType {
   MANUAL = 'manual'
 }
 
-@Entity('payment_methods')
-export class PaymentMethod {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @Column()
-  name: string;
-
-  @Column({
-    type: 'enum',
-    enum: PaymentMethodType
-  })
-  type: PaymentMethodType;
-
-  @Column('jsonb')
-  details: Record<string, any>;
-
-  @Column({ default: true })
-  is_active: boolean;
-
-  @CreateDateColumn()
-  created_at: Date;
-
-  @UpdateDateColumn()
-  updated_at: Date;
-
-  @OneToMany(() => Order, order => order.payment_method)
-  orders: Order[];
+export interface PaymentMethodDetails {
+  // Vodafone Cash
+  phone?: string;
+  name?: string;
+  
+  // USDT TRC20
+  address?: string;
+  network?: string;
+  
+  // RedotPay
+  email?: string;
+  merchant_id?: string;
+  
+  // Manual
+  instructions?: string;
+  account_info?: string;
 }
 
+export interface PaymentMethod {
+  id: string;
+  name: string;
+  type: PaymentMethodType;
+  details: PaymentMethodDetails;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
+export interface PaymentProof {
+  id: string;
+  order_id: string;
+  payment_method_id: string;
+  proof_url: string;
+  status: 'pending' | 'approved' | 'rejected';
+  notes?: string;
+  created_at: Date;
+  updated_at: Date;
+}
